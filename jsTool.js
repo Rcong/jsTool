@@ -41,36 +41,48 @@ var jsTool = (function(){
         },
 
         /* DOM操作 */
-        //去除字符串两边的空白字符
+        //去除字符串的空白字符
         trim: function(str, trimMode) {
             switch (trimMode) {
-                case 'head':
+                case 'left':
                     return str.replace(/(^\s+)/g, '');
-                case 'end':
+                case 'right':
                     return str.replace(/(\s+$)/g, '');
                 case 'all':
-                    return str.replace(/(^\s+)|(\s+$)|(\s+$)/g, '');
+                    return str.replace(/(^\s+)|\s|(\s+$)/g, '');
                 default:
                     return str.replace(/(^\s+)|(\s+$)/g, '');
             }
         },
         hasClass:function(el,cls){
+            this.type(el);
             cls = this.trim(cls);
             return new RegExp('\\b'+cls+'\\b','g').test(el.className);
+
         },
         addClass:function(el,cls){
-            if(!this.hasClass(el,cls)){
-                cls = this.trim(cls, 'all');
-                el.className += (' ' + cls);
-                console.log(el.className);
+            var clsArray = this.trim(cls).split(/\s+/);
+            for (var i = 0, length = clsArray.length; i < length; i++) {
+                if(!this.hasClass(el, clsArray[i])){
+                    el.className += (' ' + clsArray[i]);
+                    console.log(el.className);
+                }
             }
         },
         removeClass:function(el,cls){
-            cls = this.trim(cls, 'all');
-            var clsName =  el.className,
-                reg = new RegExp('\\b'+cls+'\\b','g');
-            clsName = clsName.replace(reg,'').replace(/\s+/g,' ');
-            el.className = this.trim(clsName);
+            var removeClassArray = this.trim(cls).split(/\s+/),
+                elClassArray = el.className.split(/\s+/);
+            for (var i = 0, length = removeClassArray.length; i < length; i++) {
+                var index = elClassArray.indexOf(removeClassArray[i]);
+                if(!(index === -1)){
+                    console.log(elClassArray);
+                    elClassArray.splice(index, 1);
+                }
+            }
+            console.log(elClassArray);
+            el.className = elClassArray.join(' ');
+
+            console.log(el.className);
         },
 
         /* ajax */
