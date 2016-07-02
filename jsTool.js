@@ -35,10 +35,10 @@ var jsTool = (function(){
             return this.type(value)==='regexp';
         },
 
-        /* 判断 */
-        isEmail:function(value){
+        /* 克隆 */
+        clone: function(obj) {
 
-        },
+        }
 
         /* DOM操作 */
         //去除字符串的空白字符
@@ -55,10 +55,8 @@ var jsTool = (function(){
             }
         },
         hasClass:function(el,cls){
-            this.type(el);
             cls = this.trim(cls);
             return new RegExp('\\b'+cls+'\\b','g').test(el.className);
-
         },
         addClass:function(el,cls){
             var clsArray = this.trim(cls).split(/\s+/);
@@ -75,26 +73,22 @@ var jsTool = (function(){
             for (var i = 0, length = removeClassArray.length; i < length; i++) {
                 var index = elClassArray.indexOf(removeClassArray[i]);
                 if(!(index === -1)){
-                    console.log(elClassArray);
                     elClassArray.splice(index, 1);
                 }
             }
-            console.log(elClassArray);
             el.className = elClassArray.join(' ');
-
-            console.log(el.className);
         },
 
         /* ajax */
         ajax: function(opts){
 
-            var xmlhttp=new XMLHttpRequest();
-            xmlhttp.onreadystatechange=function(){
-                if (xmlhttp.readyState==4 && xmlhttp.status==200){
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function(){
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200){
                 	var json = JSON.parse(xmlhttp.responseText);
                 	opts.success(json);
                 }
-                if(xmlhttp.readyState==4 && xmlhttp.status == 404){
+                if(xmlhttp.readyState === 4 && xmlhttp.status === 404){
                 	opts.error();
                 }
             }
