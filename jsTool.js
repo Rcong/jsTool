@@ -31,14 +31,69 @@ var jsTool = (function(){
         isDate:function(value){
             return this.type(value)==='date';
         },
+        //校验日期校验代码代码
+        isValidDate: function(value, userFormat) {
+            // Set default format if format is not provided
+            userFormat = userFormat || 'mm/dd/yyyy';
+
+            // Find custom delimiter by excluding
+            // month, day and year characters
+            var delimiter = /[^mdy]/.exec(userFormat)[0];
+
+            // Create an array with month, day and year
+            // so we know the format order by index
+            var theFormat = userFormat.split(delimiter);
+
+            // Create array from user date
+            var theDate = value.split(delimiter);
+
+            function isDate(date, format) {
+            var m, d, y, i = 0, len = format.length, f;
+            for (i; i < len; i++) {
+              f = format[i];
+              if (/m/.test(f)) m = date[i];
+              if (/d/.test(f)) d = date[i];
+              if (/y/.test(f)) y = date[i];
+            }
+            return (
+              m > 0 && m < 13 &&
+              y && y.length === 4 &&
+              d > 0 &&
+              // Check if it's a valid day of the month
+              d <= (new Date(y, m, 0)).getDate()
+            );
+            }
+
+            return isDate(theDate, theFormat);
+        },
         isRegExp:function(value){
             return this.type(value)==='regexp';
         },
-
+        //根据给定长度截取文本长度
+        excerpt: function(str, length) {
+            var words = str.split('');
+            words.splice(length, words.length-1);
+            return words.join('') + (words.length !== str.split('').length ? '…' : '');
+        },
+        //判断当前屏幕适配度
+        isBreakPoint: function(bp) {
+            // The breakpoints that you set in your css
+            var bps = [320, 480, 768, 1024];
+            var w = window.innerWidth;
+            var min, max;
+            for (var i = 0, l = bps.length; i < l; i++) {
+                if (bps[i] === bp) {
+                    min = bps[i-1] || 0;
+                    max = bps[i];
+                    break;
+                }
+            }
+            return w > min && w <= max;
+        },
         /* 克隆 */
         clone: function(obj) {
 
-        }
+        },
 
         /* DOM操作 */
         //去除字符串的空白字符
@@ -127,6 +182,7 @@ var jsTool = (function(){
             }
             return false;
         },
+        //跨浏览器removeEvent
         removeEvent: function(node, type, handler) {
             if (!node) return false;
             if (node.removeEventListener) {
