@@ -114,3 +114,46 @@ jsTool.isArray(Date.now());
 
 //false
 ```
+
+### ```jsTool.isValidDate(value, userFormat)```
+根据给定格式验证日期是否合规。
+```javascript
+
+jsTool.isValidDate('2016-07-12', 'yyyy-mm-dd');
+
+//true
+
+jsTool.isValidDate('2016.07.32', 'yyyy.mm.dd');
+
+//根据yyyy.mm.dd格式来验证日期,因为没有32号而返回false
+```
+
+### ```jsTool.isRegExp(value)```
+```javascript
+jsTool.isRegExp(/^abc/);
+
+//true
+
+jsTool.isRegExp(new RegExp('abc'));
+
+//true
+
+jsTool.isRegExp('abc');
+
+//false
+```
+
+### ```jsTool.limitStr(str, length)```
+根据length来限制给定的字符串str的长度,如超出,超出部分使用省略号替换
+```javascript
+jsTool.limitStr('javascript', 2);
+
+//"ja…"
+
+jsTool.limitStr('javascript', 12);
+
+//"javascript"
+```
+
+### ```jsTool.isBreakPoint(bp)```
+目前很多设计已经采用了响应式布局来适配网站或应用在不同设备上的显示。所以经常需要在代码中判断当前处于哪一个屏幕适配度下。
