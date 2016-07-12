@@ -1,4 +1,4 @@
-# jsTool
+# jsTool(持续更新)
 原生JS封装的通用函数库
 
 ##API
@@ -156,4 +156,46 @@ jsTool.limitStr('javascript', 12);
 ```
 
 ### ```jsTool.isBreakPoint(bp)```
-目前很多设计已经采用了响应式布局来适配网站或应用在不同设备上的显示。所以经常需要在代码中判断当前处于哪一个屏幕适配度下。
+目前很多设计已经采用了响应式布局来适配网站或应用在不同设备上的显示。所以经常需要在代码中判断当前处于哪一个屏幕适配度下。目前断点分别断在```320px```、```480px```、```768px```、```1024px```、```1366px```、```1440px```、```1600px```、```1920px```。
+```javascript
+//当前屏幕宽度1389px
+jsTool.isBreakPoint(1366);
+
+//false
+
+jsTool.isBreakPoint(1440);
+
+//true
+
+//使用方法
+if ( jsTool.isBreakPoint(320) ) {
+  // 小于320px所做的操作
+}
+if ( jsTool.isBreakPoint(480) ) {
+  // 在320px ~ 480px之间的操作
+}
+…
+```
+
+### ```jsTool.trim(str, trimMode)```
+去除去除字符串的空白字符,第二个参数```trimMode```为```trim```模式,有三个取值:```left```、```right```、```all```。
+* ```left```
+
+```javascript
+jsTool.trim('  javascript html css  ', 'left');
+//"javascript html css  "
+```
+
+* ```right```
+
+```javascript
+jsTool.trim('  javascript html css  ', 'right');
+"  javascript html css"
+```
+
+* ```all```
+
+```javascript
+jsTool.trim('  javascript html css  ', 'all');
+"javascripthtmlcss"
+```
