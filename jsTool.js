@@ -110,7 +110,7 @@ var jsTool = (function(){
                // 对于 数字 字符串 布尔 null undefined
                return src;
         },
-        // 对数组进行去重操作，只考虑数组中元素为数字或字符串，返回一个去重后的数组
+        // 对数组进行去重操作
         uniqArray: function(arr) {
             var obj = {};
             for (var i = 0, len = arr.length; i < len; i++) {
