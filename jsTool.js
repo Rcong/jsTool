@@ -75,8 +75,18 @@ var jsTool = (function(){
             }
             return w > min && w <= max;
         },
+        // 对数组进行去重操作
+        uniqueArray: function(arr) {
+            var newArray = [];
+            for (var i = 0, len = arr.length; i < len; i++) {
+                if (arr[i] !== '' && newArray.indexOf(arr[i]) < 0 ) {    // indexOf方法不支持IE9以下
+                    newArray.push(arr[i]);
+                }
+            }
+            return newArray;
+        },
         /* 克隆 */
-        clone: function(src) {
+        cloneObj: function(src) {
             var clone = src;
 
                // 对于Date,String,Boolean等引用类型的数据，需要考虑调用构造函数重新构造，直接赋值依然会有引用问题（不是真正的clone引用变量）
@@ -91,7 +101,7 @@ var jsTool = (function(){
                if (src instanceof Array) {
                    clone = [];
                    for (var key in src) {
-                       clone[key] = cloneObject(src[key]);
+                       clone[key] = cloneObj(src[key]);
                    }
                    return clone;
                }
@@ -101,7 +111,7 @@ var jsTool = (function(){
                    clone = {};
                    for (var key in src) {
                        if (src.hasOwnProperty(key)) {       // 忽略掉继承属性
-                           clone[key] = cloneObject(src[key]);
+                           clone[key] = cloneObj(src[key]);
                        }
                    }
                    return clone;
@@ -109,14 +119,6 @@ var jsTool = (function(){
 
                // 对于 数字 字符串 布尔 null undefined
                return src;
-        },
-        // 对数组进行去重操作
-        uniqArray: function(arr) {
-            var obj = {};
-            for (var i = 0, len = arr.length; i < len; i++) {
-                obj[arr[i]] = true;
-            }
-            return Object.keys(obj);
         },
         /* DOM操作 */
         //去除字符串的空白字符
