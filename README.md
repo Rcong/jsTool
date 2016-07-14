@@ -190,12 +190,20 @@ jsTool.trim('  javascript html css  ', 'left');
 
 ```javascript
 jsTool.trim('  javascript html css  ', 'right');
-"  javascript html css"
+//"  javascript html css"
 ```
 
 * ```all```
 
 ```javascript
 jsTool.trim('  javascript html css  ', 'all');
-"javascripthtmlcss"
+//"javascripthtmlcss"
+```
+
+## jsTool.uniqueArray(arr)
+数组去重
+```javascript
+var arr = [1, 2, 3, 'a', '1', 'a', 2];
+jsTool.uniqueArray(arr);
+//[1, 2, 3, "a", "1"]
 ```
