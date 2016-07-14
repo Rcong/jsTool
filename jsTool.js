@@ -31,54 +31,39 @@ var jsTool = (function(){
         isDate:function(value){
             return this.type(value)==='date';
         },
-        //校验日期校验代码代码
+        //校验日期是否合规代码
         isValidDate: function(value, userFormat) {
-            // Set default format if format is not provided
+
+            //设置默认格式
             userFormat = userFormat || 'mm/dd/yyyy';
 
-            // Find custom delimiter by excluding
-            // month, day and year characters
+            //正则匹配出分隔符,根据分隔符生成日期数据和格式数组
             var delimiter = /[^mdy]/.exec(userFormat)[0];
+                theFormat = userFormat.split(delimiter);
+                theDate = value.split(delimiter);
 
-            // Create an array with month, day and year
-            // so we know the format order by index
-            var theFormat = userFormat.split(delimiter);
-
-            // Create array from user date
-            var theDate = value.split(delimiter);
-
-            function isDate(date, format) {
-            var m, d, y, i = 0, len = format.length, f;
-            for (i; i < len; i++) {
-              f = format[i];
-              if (/m/.test(f)) m = date[i];
-              if (/d/.test(f)) d = date[i];
-              if (/y/.test(f)) y = date[i];
+            var month, day, year;
+            for (var i = 0, len = theFormat.length; i < len; i++) {
+              var format = theFormat[i];
+              /m/.test(format) && (month = theDate[i]);
+              /d/.test(format) && (day = theDate[i]);
+              /y/.test(format) && (year = theDate[i]);
             }
-            return (
-              m > 0 && m < 13 &&
-              y && y.length === 4 &&
-              d > 0 &&
-              // Check if it's a valid day of the month
-              d <= (new Date(y, m, 0)).getDate()
-            );
-            }
-
-            return isDate(theDate, theFormat);
+            return month > 0 && month < 13 && year && year.length === 4 && day > 0 && day <= (new Date(year, month, 0)).getDate();
         },
         isRegExp:function(value){
             return this.type(value)==='regexp';
         },
-        //根据给定长度截取文本长度
-        excerpt: function(str, length) {
+        //限制文本字数,超出的替换省略号
+        limitStr: function(str, length) {
             var words = str.split('');
             words.splice(length, words.length-1);
             return words.join('') + (words.length !== str.split('').length ? '…' : '');
         },
-        //判断当前屏幕适配度
+        //判断当前处于哪一个屏幕适配度下
         isBreakPoint: function(bp) {
-            // The breakpoints that you set in your css
-            var bps = [320, 480, 768, 1024];
+            //css中的断点
+            var bps = [320, 480, 768, 1024, 1366, 1440, 1600 ,1920];
             var w = window.innerWidth;
             var min, max;
             for (var i = 0, l = bps.length; i < l; i++) {
@@ -91,10 +76,48 @@ var jsTool = (function(){
             return w > min && w <= max;
         },
         /* 克隆 */
-        clone: function(obj) {
+        clone: function(src) {
+            var clone = src;
 
+               // 对于Date,String,Boolean等引用类型的数据，需要考虑调用构造函数重新构造，直接赋值依然会有引用问题（不是真正的clone引用变量）
+               // 对于 Date
+               if (src instanceof Date) {
+                   clone = new Date(src.getDate());
+                   return clone;
+               }
+
+               // 对于Object和Array的遍历，可以使用for in，这样可以保证在在Array对象上扩展的属性也可以正确复制
+               // 对于 数组
+               if (src instanceof Array) {
+                   clone = [];
+                   for (var key in src) {
+                       clone[key] = cloneObject(src[key]);
+                   }
+                   return clone;
+               }
+
+               // 对于 Object
+               if (src instanceof Object) {
+                   clone = {};
+                   for (var key in src) {
+                       if (src.hasOwnProperty(key)) {       // 忽略掉继承属性
+                           clone[key] = cloneObject(src[key]);
+                       }
+                   }
+                   return clone;
+               }
+
+               // 对于 数字 字符串 布尔 null undefined
+               return src;
         },
-
+        // 对数组进行去重操作，只考虑数组中元素为数字或字符串，返回一个去重后的数组
+        uniqArray: function(arr) {
+            var obj = {};
+            for (var i = 0, len = arr.length; i < len; i++) {
+                obj[arr[i]] = true;
+            }
+            return Object.keys(obj);
+        },
         /* DOM操作 */
         //去除字符串的空白字符
         trim: function(str, trimMode) {
