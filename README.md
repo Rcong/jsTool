@@ -207,3 +207,15 @@ var arr = [1, 2, 3, 'a', '1', 'a', 2];
 jsTool.uniqueArray(arr);
 //[1, 2, 3, "a", "1"]
 ```
+
+## jsTool.isEmptyObject(obj)
+判断是否是空对象
+```javascript
+var obj = {};
+jsTool.isEmptyObject(obj);
+//true
+
+obj[1] = 'Hello Js';
+jsTool.isEmptyObject(obj);
+//false
+```
