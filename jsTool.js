@@ -130,6 +130,11 @@ var jsTool = (function(){
                // 对于 数字 字符串 布尔 null undefined
                return obj;
         },
+        inherits: function(subType, superType){
+            var _prototype = Object.create(superType.prototype);
+            _prototype.constructor = subType;
+            subType.prototype = _prototype;
+        }
         /* DOM操作 */
         //去除字符串的空白字符
         trim: function(str, trimMode) {
@@ -168,7 +173,6 @@ var jsTool = (function(){
             }
             el.className = elClassArray.join(' ');
         },
-
         /* ajax */
         ajax: function(opts){
 
