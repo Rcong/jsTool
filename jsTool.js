@@ -79,12 +79,27 @@ var jsTool = (function(){
         uniqueArray: function(arr) {
             var newArray = [];
             for (var i = 0, len = arr.length; i < len; i++) {
-                if (arr[i] !== '' && newArray.indexOf(arr[i]) < 0 ) {    // indexOf方法不支持IE9以下
+                if (newArray.indexOf(arr[i]) < 0 ) {    // indexOf方法不支持IE9以下
                     newArray.push(arr[i]);
                 }
             }
             return newArray;
         },
+        // 对数组进行去重操作方法2
+        uniqueArray2: function(arr){
+            var ret = [];
+            var hash = {};
+
+            for(var i = 0; i < arr.length; i++){
+                var item = arr[i];
+                var key = typeof(item) + item;
+                if(hash[key] !== 1){
+                    ret.push(item);
+                    hash[key] = 1;
+                }
+            }
+            return ret;
+        }
         // 判断是否是空对象
         isEmptyObject: function(obj) {
             var name;
